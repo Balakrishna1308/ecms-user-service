@@ -25,9 +25,6 @@ public class AuthController {
         return ResponseEntity.ok(registeredUser);
     }
 
-
-
-
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody User loginRequest)
     {
@@ -53,8 +50,4 @@ public class AuthController {
             return ResponseEntity.status(404).body("User not found");
         }
     }
-
-
-
-
 }
