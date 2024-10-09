@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/users")
 public class AuthController {
@@ -22,4 +24,37 @@ public class AuthController {
         User registeredUser = userService.saveUser(user);
         return ResponseEntity.ok(registeredUser);
     }
+
+
+
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody User loginRequest)
+    {
+        Optional<User> existingUser = userService.findByUsername(loginRequest.getUsername());
+
+        if (existingUser.isPresent())
+        {
+            User user = existingUser.get();
+
+            if (user.getPassword().equals(loginRequest.getPassword()))
+            {
+                return ResponseEntity.ok("Login successful");
+            }
+            else
+            {
+                return ResponseEntity.status(401).body("Invalid password");
+            }
+
+        }
+
+        else
+        {
+            return ResponseEntity.status(404).body("User not found");
+        }
+    }
+
+
+
+
 }
